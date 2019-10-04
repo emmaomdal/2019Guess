@@ -38,7 +38,6 @@ module.exports = function() {
       BIGGER: "!الرقم اصغر, حاول مره ثانيه",
       OVER: ".انتهت اللعبه, للاسف"
     },
-
       de: {
       NOT_STARTED: "Das Spiel hat noch nicht begonnen. Gehe zu /start",
       WIN:"Richtig geraten! Das Spiel ist beendet.",
@@ -46,7 +45,6 @@ module.exports = function() {
       BIGGER:"Die Zahl ist kleiner, versuche noch einmal",
       OVER:"Das Spiel ist schon beendet."
     },
-
     bg: {
       NOT_STARTED: "Играта не е започнала. Отиди до /start",
       WIN: "Ти позна правилния отговор! Край на играта.",

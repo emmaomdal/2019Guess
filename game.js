@@ -28,13 +28,13 @@ const LAN_KEY =  {
     LOWER:"LOWER",
     BIGGER:"BIGGER",
     OVER:"OVER"
-}
+};
 
 let pickedNumber = null;
 let isOngoing = false;
 
 let uniqueUsers = [];
-let adminpsw = process.env.admin_psw || "local"
+let adminpsw = process.env.admin_psw || "local";
 
 
 app.set('port', (process.env.PORT || DEFAULT_PORT));
@@ -51,14 +51,14 @@ app.get("/start/:user", function (req, response) {
         isOngoing = true;
         uniqueUsers = [req.params.user];
     }
-    response.json({code: HTTP_CODES.OK, min: MIN, max: MAX});
+    response.json({code: HTTP_CODES.OK, min: MIN, max: MAX, users: uniqueUsers.length});
 });
 
 app.post("/guess/:user/:number", (req, res) => {
 
 
-    let user = req.params.user
-    if(uniqueUsers.indexOf(user) > -1){
+    let user = req.params.user;
+    if(uniqueUsers.indexOf(user) === -1){
         uniqueUsers.push(user);
     }
 

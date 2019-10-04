@@ -7,34 +7,184 @@
     <title>Guess my number</title>
 </head>
 <body>
-
-    <input id="userName" type="text">
-    <input id="guess" type="number">
-    <button>Guess</button>
-
-    <script>
-    
-        function language(KEY){
-            // Remember this function needs to do something.
-        }
-        const nameInput = document.getElementById("userName");
-
-        if(nameInput){
-            const name = nameInput.value
-            if(name.length > 0){
-                fetch(`/start/${name}`).then(resp =>{
-                if(resp.ok){
-                    resp.body.json()
-                }}).then(json => {
-
-                });
-            }
-        }
-
-        
-        
-    
-    </script>
+<select id="languages">
+    <option value="en" selected>EN</option>
+    <option value="no">NO</option>
+    <option value="ro">RO</option>
+    <option value="fr">FR</option>
+    <option value="ar">AR</option>
+    <option value="de">DE</option>
+    <option value="bg">BG</option>
+    <option value="sa">SA</option>
+</select>
+<label for="user">Username: </label><br/>
+<input id="user" type="text"><br/>
+<div id="start" class="button">Start new game</div>
+<div id="minmax"> </div>
+<label for="guess">Your guess: </label><br/>
+<input id="guess" type="number">
+<div id="sendGuess" class="button">Guess!</div>
+<div id="outDiv"> </div>
+<div id="userNr"> </div>
 
 </body>
+<script>
+
+    let userin = document.getElementById("user");
+    let guessin = document.getElementById("guess");
+    let userNr = document.getElementById("userNr");
+
+    let languageSelect = document.getElementById("languages");
+
+    let guessbtn = document.getElementById("sendGuess");
+    let startbtn = document.getElementById("start");
+
+    let numDiv = document.getElementById("minmax");
+    let outDiv = document.getElementById("outDiv");
+
+    guessbtn.addEventListener('click', tryGuess);
+    startbtn.addEventListener('click', tryStart);
+
+    window.addEventListener('keyup', hitEnter);
+
+    languageSelect.addEventListener('change', changeLang);
+
+
+    function tryGuess() {
+        let id = checkUser(userin.value);
+        let guess = checkGuess(guessin.value);
+        let lang = languageSelect.value;
+
+        if(id && guess) {
+            fetch(`guess/${id}/${guess}`,
+                {
+                    method:'POST',
+                    headers: {
+                        'Content-type' : 'application/json',
+                        'accept-language' : lang
+                    }
+                }
+
+            ).then(resp => {
+                if(resp.ok) {
+                    resp.text().then(resp => {
+
+                        let answer = JSON.parse(resp);
+
+                        writeOut(answer.msg, outDiv, 'h2');
+                        writeOut(answer.users, userNr,'h2');
+
+                    })
+                }
+                else {
+                    console.log(resp);
+                }
+            });
+        }
+        else if (!id){
+            writeOut(MSGS.NO_NAME, outDiv, 'h2');
+        }
+        else if (!guess) {
+            writeOut(MSGS.NO_GUESS, outDiv, 'h2');
+        }
+    }
+
+    function tryStart() {
+        let id = checkUser(userin.value);
+        if(id) {
+            fetch(`/start/${id}`).then(resp => {
+                if(resp.ok) {
+                    resp.text().then(resp => {
+                        let temp = JSON.parse(resp);
+
+                        writeOut(temp.users, userNr, 'h2');
+                        writeOut(`Enter a number from  ${temp.min} - ${temp.max}!`, numDiv,'h3');
+
+                    })
+                }
+            });
+        }
+        else {
+            writeOut(MSGS.NO_NAME, outDiv, 'h2');
+        }
+    }
+
+    function checkUser(input) {
+        let output = input;
+        if(input) {
+            let whitespace = /\s/.test(input);
+            if(whitespace) {
+                let words = input.split(/\s/);
+                output = words.join('');
+            }
+            let slashes = /\//.test(output);
+            if(slashes) {
+                let words = output.split(/\//);
+                output = words.join('');
+            }
+            let questions = /\?/.test(output);
+            if(questions){
+                let words = output.split(/\?/);
+                output = words.join('');
+            }
+            let percent = /%/.test(output);
+            if(percent) {
+                let words = output.split(/%/);
+                output = words.join('');
+            }
+
+            if(!output) {
+                console.log("Valid usernames are filtered for whitespace, forward slashes, questions marks and percent signs.");
+                return null;
+            }
+
+            return output;
+        }
+        else {
+            return null;
+        }
+    }
+
+    function checkGuess(input) {
+        return input ? input : false;
+    }
+
+    function clearDiv(element) {
+        element.innerHTML = "";
+    }
+
+    function writeOut(message, target, size) {
+        clearDiv(target);
+
+        let elm = document.createElement(size);
+        elm.innerHTML = message;
+        target.appendChild(elm);
+    }
+
+    function hitEnter(evt) {
+        if(evt.keyCode === 13) {
+            tryGuess();
+        }
+    }
+
+    function changeLang() {
+
+    }
+
+
+    // --------------------
+
+    const MSGS = {
+        NO_NAME: "You must enter a valid username!",
+        NO_GUESS: "You must enter your guess!",
+        GUESS: `Enter a number between`
+    }
+</script>
+<style>
+    select {
+        position: absolute;
+        right: 1em;
+        width: auto;
+    }
+</style>
 </html>
