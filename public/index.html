@@ -8,33 +8,19 @@
 </head>
 <body>
 
-    <input id="userName" type="text">
-    <input id="guess" type="number">
-    <button>Guess</button>
 
-    <script>
-    
-        function language(KEY){
-            // Remember this function needs to do something.
-        }
-        const nameInput = document.getElementById("userName");
+<label for="userName" id="userNameLabel"></label>
+<input id="userName" type="text">
 
-        if(nameInput){
-            const name = nameInput.value
-            if(name.length > 0){
-                fetch(`/start/${name}`).then(resp =>{
-                if(resp.ok){
-                    resp.body.json()
-                }}).then(json => {
+<label for="guess" id="guessLabel"></label>
+<input id="guess" type="number">
+<br>
+<button id="btn1" disabled></button>
+<button id="btn2"></button>
+<p id="output"></p>
+<p id="nbPlayers"></p>
 
-                });
-            }
-        }
-
-        
-        
-    
-    </script>
+<script type="module" src="js/client.js"></script>
 
 </body>
 </html>
