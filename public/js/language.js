@@ -2,6 +2,7 @@ const DEFAULT_LANGUAGE = "en-US";
 
 const TEXTS = {
     "en-US": {
+        TITLE: "Guess my number!",
         GUESS: "Guess",
         YOUR_GUESS: "Your guess",
         USER_NAME: "Username",
@@ -9,6 +10,7 @@ const TEXTS = {
         PLAYERS_PLAYING: "player(s) playing"
     },
     "fr-FR": {
+        TITLE: "Devine mon nombre!",
         GUESS: "Deviner",
         YOUR_GUESS: "Votre choix",
         USER_NAME: "Nom d'utilisateur",
