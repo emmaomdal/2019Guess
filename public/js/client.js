@@ -29,6 +29,14 @@ function language() {
     guessBtn.innerText = getText(LAN_KEY.GUESS, userLang);
 }
 
+async function requestToServer(path, content) {
+    return fetch(path, content).then(resp => {
+        console.log(resp);
+        if (resp.ok) {
+            return resp.json();
+        }
+    });
+}
 if (startBtn) {
     startBtn.addEventListener('click', (evt) => {
         if (nameInput) {
@@ -37,12 +45,7 @@ if (startBtn) {
             if (name.length > 0) {
                 guessBtn.disabled = false;
 
-                fetch(`http://localhost:8000/start/${name}`).then(resp => {
-                    console.log(resp);
-                    if (resp.ok) {
-                        return resp.json();
-                    }
-                }).then(json => {
+                requestToServer(`http://localhost:8000/start/${name}`, {}).then(json => {
                     console.log(json);
                     guessInput.min = json.min;
                     guessInput.max = json.max;
@@ -60,17 +63,12 @@ if (guessBtn) {
             const guess = guessInput.value;
 
             if (name.length > 0 && guess) {
-                fetch(`http://localhost:8000/guess/${name}/${guess}`, {
+                requestToServer(`http://localhost:8000/guess/${name}/${guess}`, {
                     method: "POST",
                     headers: {
                         "accept": "application/json",
                         "content-type": "application/json",
                         "accept-language": userLang
-                    },
-                }).then(resp => {
-                    console.log(resp);
-                    if (resp.ok) {
-                        return resp.json();
                     }
                 }).then(json => {
                     console.log(json);

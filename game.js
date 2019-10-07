@@ -28,13 +28,12 @@ const LAN_KEY =  {
     LOWER:"LOWER",
     BIGGER:"BIGGER",
     OVER:"OVER"
-}
+};
 
 let pickedNumber = null;
 let isOngoing = false;
 
-let uniqueUsers = [];
-let adminpsw = process.env.admin_psw || "local"
+let uniqueUsers = new Set();
 
 
 app.set('port', (process.env.PORT || DEFAULT_PORT));
@@ -49,18 +48,14 @@ app.get("/start/:user", function (req, response) {
     if (!isOngoing) {
         pickedNumber = Math.floor(Math.random() * (MAX - MIN)) + MIN;
         isOngoing = true;
-        uniqueUsers = [req.params.user];
+        uniqueUsers.clear();
+        uniqueUsers.add(req.params.user);
     }
-    response.json({code: HTTP_CODES.OK, min: MIN, max: MAX});
+    response.json({code: HTTP_CODES.OK, min: MIN, max: MAX, users: uniqueUsers.size});
 });
 
 app.post("/guess/:user/:number", (req, res) => {
-
-
-    let user = req.params.user
-    if(uniqueUsers.indexOf(user) > -1){
-        uniqueUsers.push(user);
-    }
+    uniqueUsers.add(req.params.user);
 
     let responseObj = {code: GAME_CODES.ERROR, msg: req.language(LAN_KEY.NOT_STARTED)};
   
@@ -80,7 +75,7 @@ app.post("/guess/:user/:number", (req, res) => {
             responseObj = {code: GAME_CODES.OVER, msg: req.language(LAN_KEY.OVER)};
         }
 
-        responseObj.users = uniqueUsers.length;
+        responseObj.users = uniqueUsers.size;
 
         res.json(responseObj);
     } else {
