@@ -53,10 +53,10 @@ app.get("/start/:user", function (req, response) {
         pickedNumber = Math.floor(Math.random() * (MAX - MIN)) + MIN;
         isOngoing = true;
         uniqueUsers = [req.params.user];
-        response.json({code: HTTP_CODES.OK, min: MIN, max: MAX, users: uniqueUsers.length,});
+        response.json({code: HTTP_CODES.OK, min: MIN, max: MAX, users: uniqueUsers.length});
     }
     else {
-        response.json({code: HTTP_CODES.OK, min: MIN, max: MAX, users: uniqueUsers.length,});
+        response.json({code: GAME_CODES.RUNNING, min: MIN, max: MAX, users: uniqueUsers.length, msg: req.language(LAN_KEY.RUNNING)});
     }
 });
 

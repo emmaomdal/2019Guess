@@ -121,9 +121,18 @@
     }
 
     function tryStart() {
+        let lang = languageSelect.value;
+
         let id = checkUser(userin.value);
         if(id) {
-            fetch(`/start/${id}`).then(resp => {
+            fetch(`/start/${id}`,
+                {
+                    headers: {
+                        'Content-type' : 'application/json',
+                        'accept-language' : lang
+                    }
+                }
+            ).then(resp => {
                 if(resp.ok) {
                     resp.text().then(resp => {
                         let answer = JSON.parse(resp);
