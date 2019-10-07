@@ -7,5 +7,6 @@
 "GUESS": "Guess!",
 "USERNAME": "Username:",
 "YOUR_GUESS": "Your guess:",
-"PLAYERS": "Players:"
+"PLAYERS": "Players:",
+"INSTRUCTIONS": "Guess my number between these two:"
 }

@@ -34,7 +34,16 @@
 
 </body>
 <script>
-    //const pageLanguage = require("js/pagelanguage");
+    const MSG_KEY = {
+        NO_NAME: "NO_NAME",
+        NO_GUESS: "NO_GUESS",
+        USERNAME: "USERNAME",
+        YOUR_GUESS: "YOUR_GUESS",
+        PLAYERS: "PLAYERS",
+        START: "START",
+        GUESS: "GUESS",
+        INSTRUCTIONS: "INSTRUCTIONS"
+    };
 
     let usertxt = document.getElementById("usertxt");
     let guesstxt = document.getElementById("guesstxt");
@@ -61,7 +70,9 @@
 
     let MIN;
     let MAX;
+    let msgCache;
 
+    changeLang();
 
     function tryGuess() {
         let id = checkUser(userin.value);
@@ -84,9 +95,15 @@
 
                         let answer = JSON.parse(resp);
 
-                        writeOut(`${guess}: ${answer.msg}`, outDiv, 'h2');
-                        writeOut(answer.users, userNr,'div');
-                        writeOut(`${MIN} - ${MAX}`, numDiv,'h3');
+                        writeOut(answer.users, userNr, 'div', true);
+                        writeOut(`${MIN} - ${MAX}`, numDiv, 'h3', true);
+                        if(answer.code === 2030) {
+                            writeOut(`${answer.winner} has won!`, outDiv, 'h2', true);
+                            writeOut(`The right number was ${answer.number}.`,outDiv, 'h2', false);
+
+                        } else {
+                            writeOut(`${guess}: ${answer.msg}`, outDiv, 'h2', true);
+                        }
 
                     })
                 }
@@ -96,10 +113,10 @@
             });
         }
         else if (!id){
-            sendError("NO_NAME");
+            sendError(MSG_KEY.NO_NAME);
         }
         else if (!guess) {
-            sendError("NO_GUESS");
+            sendError(MSG_KEY.NO_GUESS);
         }
     }
 
@@ -109,20 +126,26 @@
             fetch(`/start/${id}`).then(resp => {
                 if(resp.ok) {
                     resp.text().then(resp => {
-                        let temp = JSON.parse(resp);
+                        let answer = JSON.parse(resp);
+
+                        MIN = answer.min;
+                        MAX = answer.max;
 
                         clearDiv(outDiv);
-                        writeOut(temp.users, userNr, 'div');
-                        MIN = temp.min;
-                        MAX = temp.max;
-                        writeOut(`${MIN} - ${MAX}`, numDiv,'h3');
+                        writeOut(answer.users, userNr, 'div', true);
+                        writeOut(msgCache.INSTRUCTIONS, numDiv, 'h3', true);
+                        writeOut(`${MIN} - ${MAX}`, numDiv,'h3', false);
+
+                        if(answer.code === 2060) {
+                            writeOut(answer.msg, outDiv, 'h2', true);
+                        }
 
                     })
                 }
             });
         }
         else {
-            sendError("NO_NAME");
+            sendError(MSG_KEY.NO_NAME);
         }
     }
 
@@ -170,8 +193,10 @@
         element.innerHTML = "";
     }
 
-    function writeOut(message, target, size) {
-        clearDiv(target);
+    function writeOut(message, target, size, clear) {
+        if(clear) {
+            clearDiv(target);
+        }
 
         let elm = document.createElement(size);
         elm.innerHTML = message;
@@ -184,42 +209,32 @@
         }
     }
 
-    function changeLang() {
+
+    async function changeLang() {
         let lang = languageSelect.value;
 
-        fetch(`js/${lang}.json`).then (resp => {
+        await fetch(`js/${lang}.json`).then (resp => {
                 return resp.json();
             }
         ).then(resp => {
 
-                usertxt.innerHTML = resp.USERNAME;
-                guesstxt.innerHTML = resp.YOUR_GUESS;
-                playerstxt.innerHTML = resp.PLAYERS;
-                startbtn.innerHTML = resp.START;
-                guessbtn.innerHTML = resp.GUESS;
-
+            msgCache = resp;
 
         }).catch(error => {
             console.error(`This language does not exist: ${error}`);
             }
-        )
+        );
+
+        usertxt.innerHTML = msgCache.USERNAME;
+        guesstxt.innerHTML = msgCache.YOUR_GUESS;
+        playerstxt.innerHTML = msgCache.PLAYERS;
+        startbtn.innerHTML = msgCache.START;
+        guessbtn.innerHTML = msgCache.GUESS;
     }
 
 
     function sendError(code) {
-        let lang = languageSelect.value;
-
-        fetch(`js/${lang}.json`).then (resp => {
-                return resp.json();
-            }
-        ).then(resp => {
-
-            writeOut(resp[code], outDiv, 'h2');
-
-        }).catch(error => {
-                console.error(`This language does not exist: ${error}`);
-            }
-        )
+        writeOut(msgCache[code], outDiv, 'h2', true);
     }
 
 </script>

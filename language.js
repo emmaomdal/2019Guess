@@ -8,14 +8,16 @@ module.exports = function() {
       WIN: "You guessed correctly ! Game over.",
       LOWER: "The number is bigger, try again!",
       BIGGER: "The number is lower, try again!",
-      OVER: "The game is already over, too bad."
+      OVER: "The game is already over, too bad.",
+      RUNNING: "The game is already running. Make a guess!"
     },
     no: {
       NOT_STARTED: "Ikke noe pågående spill. Gå til /start",
       WIN: "Du gjettet riktig! Game over.",
       LOWER: "Tallet er større, prøv på nytt!",
       BIGGER: "Tallet er mindre, prøv på nytt!",
-      OVER: "Spillet er allerede over."
+      OVER: "Spillet er allerede over.",
+      RUNNING: "Spillet har allerede begynt. Gjett et tall!"
     },
     ro: {
       NOT_STARTED: "Jocul nu a început. Mergi la /start",
@@ -43,7 +45,8 @@ module.exports = function() {
       WIN:"Richtig geraten! Das Spiel ist beendet.",
       LOWER:"Die Zahl ist grösser, versuche noch einmal!",
       BIGGER:"Die Zahl ist kleiner, versuche noch einmal!",
-      OVER:"Das Spiel ist schon beendet."
+      OVER:"Das Spiel ist schon beendet.",
+      RUNNING: "Das Spiel läuft schon. Rate eine Zahl!"
     },
     bg: {
       NOT_STARTED: "Играта не е започнала. Отиди до /start",

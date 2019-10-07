@@ -6,5 +6,6 @@
   "GUESS": "Gjett!",
   "USERNAME": "Brukernavn:",
   "YOUR_GUESS": "Ditt tall:",
-  "PLAYERS": "Spillere:"
+  "PLAYERS": "Spillere:",
+  "INSTRUCTIONS": "Gjett tallet mitt mellom disse to:"
 }
