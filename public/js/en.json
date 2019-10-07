@@ -1,0 +1,11 @@
+
+
+{
+"NO_NAME": "You must enter a valid username!",
+"NO_GUESS": "You must enter your guess!",
+"START": "Start new game!",
+"GUESS": "Guess!",
+"USERNAME": "Username:",
+"YOUR_GUESS": "Your guess:",
+"PLAYERS": "Players:"
+}
