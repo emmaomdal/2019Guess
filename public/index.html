@@ -5,36 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Guess my number</title>
+    <link rel="stylesheet" type="text/css" href="./css/client.css">
 </head>
 <body>
 
+<div class="container">
+    <h1 id="title"></h1>
+    <label for="userName" id="userNameLabel"></label>
+    <br>
     <input id="userName" type="text">
+    <br>
+    <label for="guess" id="guessLabel"></label>
+    <br>
     <input id="guess" type="number">
-    <button>Guess</button>
+    <br>
+    <button id="btn1" disabled class="button"></button>
+    <button id="btn2" class="button"></button>
+    <p id="output"></p>
+    <p id="nbPlayers"></p>
+</div>
 
-    <script>
-    
-        function language(KEY){
-            // Remember this function needs to do something.
-        }
-        const nameInput = document.getElementById("userName");
 
-        if(nameInput){
-            const name = nameInput.value
-            if(name.length > 0){
-                fetch(`/start/${name}`).then(resp =>{
-                if(resp.ok){
-                    resp.body.json()
-                }}).then(json => {
-
-                });
-            }
-        }
-
-        
-        
-    
-    </script>
+<script type="module" src="js/client.js"></script>
 
 </body>
 </html>
