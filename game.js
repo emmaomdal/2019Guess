@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const languageSelector = require("./language");
 const app = express();
 
-const DEFAULT_PORT = 8000;
+const DEFAULT_PORT = 8080;
 
 const MAX = 100;
 const MIN = 1;
@@ -19,7 +19,8 @@ const GAME_CODES = {
     WIN: 2000,
     LOWER: 2010,
     BIGGER: 2020,
-    OVER: 2030
+    OVER: 2030,
+    RUNNING: 2040
 };
 
 const LAN_KEY =  {
@@ -27,12 +28,14 @@ const LAN_KEY =  {
     WIN:"WIN",
     LOWER:"LOWER",
     BIGGER:"BIGGER",
-    OVER:"OVER"
+    OVER:"OVER",
+    RUNNING:"RUNNING"
 };
 
 let pickedNumber = null;
 let isOngoing = false;
 
+let winner = undefined;
 let uniqueUsers = new Set();
 
 
@@ -66,13 +69,14 @@ app.post("/guess/:user/:number", (req, res) => {
             if (guess === pickedNumber) {
                 isOngoing = false;
                 responseObj = {code: GAME_CODES.WIN, msg: req.language(LAN_KEY.WIN)};
+                winner = req.params.user;
             } else if (guess < pickedNumber) {
                 responseObj = {code: GAME_CODES.LOWER, msg: req.language(LAN_KEY.LOWER)};
             } else {
                 responseObj = {code: GAME_CODES.BIGGER, msg: req.language(LAN_KEY.BIGGER)};
             }
         } else {
-            responseObj = {code: GAME_CODES.OVER, msg: req.language(LAN_KEY.OVER)};
+            responseObj = {code: GAME_CODES.OVER, msg: req.language(LAN_KEY.OVER), winner: winner, number: pickedNumber};
         }
 
         responseObj.users = uniqueUsers.size;
