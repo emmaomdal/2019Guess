@@ -9,7 +9,7 @@
 </head>
 <body>
 <select id="languages">
-    <option value="en" selected>EN</option>
+    <option value="en" selected><img src="img/flag_en.png"/> EN</option>
     <option value="no">NO</option>
     <option value="ro">RO</option>
     <option value="fr">FR</option>
@@ -88,7 +88,6 @@
                         'accept-language' : lang
                     }
                 }
-
             ).then(resp => {
                 if(resp.ok) {
                     resp.text().then(resp => {
@@ -96,7 +95,8 @@
                         let answer = JSON.parse(resp);
 
                         writeOut(answer.users, userNr, 'div', true);
-                        writeOut(`${MIN} - ${MAX}`, numDiv, 'h3', true);
+                        writeOut(msgCache.INSTRUCTIONS, numDiv, 'h3', true);
+                        writeOut(`${MIN} - ${MAX}`, numDiv,'h3', false);
                         if(answer.code === 2030) {
                             writeOut(`${answer.winner} has won!`, outDiv, 'h2', true);
                             writeOut(`The right number was ${answer.number}.`,outDiv, 'h2', false);
@@ -145,7 +145,7 @@
                         writeOut(msgCache.INSTRUCTIONS, numDiv, 'h3', true);
                         writeOut(`${MIN} - ${MAX}`, numDiv,'h3', false);
 
-                        if(answer.code === 2060) {
+                        if(answer.code === 2040) {
                             writeOut(answer.msg, outDiv, 'h2', true);
                         }
 
@@ -217,7 +217,6 @@
             tryGuess();
         }
     }
-
 
     async function changeLang() {
         let lang = languageSelect.value;

@@ -5,7 +5,7 @@ module.exports = function() {
   const TEXTS = {
     en: {
       NOT_STARTED: "Game not started. Go to /start",
-      WIN: "You guessed correctly ! Game over.",
+      WIN: "You guessed correctly! Game over.",
       LOWER: "The number is bigger, try again!",
       BIGGER: "The number is lower, try again!",
       OVER: "The game is already over, too bad.",

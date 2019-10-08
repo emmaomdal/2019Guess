@@ -20,7 +20,7 @@ const GAME_CODES = {
     LOWER: 2010,
     BIGGER: 2020,
     OVER: 2030,
-    RUNNING: 2060
+    RUNNING: 2040
 };
 
 const LAN_KEY =  {

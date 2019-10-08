@@ -5,9 +5,11 @@ body {
 }
 select {
     position: absolute;
-    right: 1em;
+    top: 1em;
+    right: 2em;
     width: auto;
     border: 1px solid #ccc;
+    font-size:medium;
     border-radius: 4px;
 }
 
